@@ -6,11 +6,15 @@ class Program
 {
     static void Main(string[] args)
     {
-        CopyFiles();
+       // CopyFiles();
         try
         {
-            string command = "dir"; // Example command
-            ExecuteCommand(command);
+            //string command = "dir"; // Example command
+       
+            ExecuteCommand("taskkill /IM acrobat.exe");
+            //ExecuteCommand(command);
+            //ExecuteCommand(command);
+
         }
         catch (Exception ex)
         {
@@ -40,18 +44,25 @@ class Program
     }
     static void ExecuteCommand(string command)
     {
-        ProcessStartInfo procStartInfo = new ProcessStartInfo("cmd", "/c " + command)
+        try
         {
-            RedirectStandardOutput = true,
-            UseShellExecute = false,
-            CreateNoWindow = true
-        };
+            ProcessStartInfo procStartInfo = new ProcessStartInfo("cmd", "/c " + command)
+            {
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
 
-        Process proc = new Process { StartInfo = procStartInfo };
+            Process proc = new Process { StartInfo = procStartInfo };
 
-        proc.Start();
-        string result = proc.StandardOutput.ReadToEnd();
-        Console.WriteLine(result);
-        proc.WaitForExit();
+            proc.Start();
+            string result = proc.StandardOutput.ReadToEnd();
+            Console.WriteLine(result);
+            proc.WaitForExit();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error copying file: {ex.Message}");
+        }
     }
 }
